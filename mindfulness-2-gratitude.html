@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gratitude Practice · Mindful Moment</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,400&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #faf7f2;
+    --ink: #2c2418;
+    --warm: #c4874a;
+    --gold: #d4a055;
+    --pale: #ede8df;
+    --muted: #9a8f82;
+  }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2.5rem 1.5rem;
+  }
+  body::after {
+    content: '';
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    height: 40%;
+    background: linear-gradient(to top, rgba(196,135,74,0.06), transparent);
+    pointer-events: none;
+  }
+  .ornament {
+    font-size: 2.2rem;
+    margin-bottom: 1rem;
+    opacity: 0;
+    animation: fadeIn 0.6s 0.1s forwards;
+  }
+  .tag { font-size: 0.6rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--warm); margin-bottom: 0.5rem; opacity: 0; animation: fadeIn 0.6s 0.2s forwards; }
+  h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 6vw, 3.2rem); color: var(--ink); letter-spacing: 0.02em; text-align: center; margin-bottom: 0.5rem; opacity: 0; animation: fadeIn 0.6s 0.3s forwards; }
+  .desc { font-size: 0.85rem; color: var(--muted); text-align: center; max-width: 320px; line-height: 1.7; margin-bottom: 2.5rem; opacity: 0; animation: fadeIn 0.6s 0.4s forwards; }
+  .prompts { display: flex; flex-direction: column; gap: 1rem; width: 100%; max-width: 400px; margin-bottom: 2rem; opacity: 0; animation: fadeIn 0.6s 0.5s forwards; }
+  .prompt-card {
+    background: white;
+    border-left: 3px solid var(--gold);
+    padding: 1.1rem 1.4rem;
+    border-radius: 0 8px 8px 0;
+    box-shadow: 0 2px 12px rgba(44,36,24,0.06);
+  }
+  .prompt-num { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--warm); margin-bottom: 0.35rem; }
+  .prompt-q { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.05rem; color: var(--ink); line-height: 1.5; margin-bottom: 0.5rem; }
+  .prompt-input { width: 100%; border: none; border-bottom: 1px solid var(--pale); background: transparent; font-family: 'DM Sans', sans-serif; font-size: 0.85rem; color: var(--ink); padding: 0.4rem 0; outline: none; font-weight: 300; }
+  .prompt-input::placeholder { color: var(--muted); }
+  .prompt-input:focus { border-bottom-color: var(--gold); }
+  .note { font-size: 0.72rem; color: var(--muted); text-align: center; max-width: 320px; line-height: 1.6; font-style: italic; opacity: 0; animation: fadeIn 0.6s 0.7s forwards; }
+  .divider { width: 40px; height: 1px; background: var(--gold); margin: 0 auto 1.5rem; opacity: 0; animation: fadeIn 0.6s 0.65s forwards; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+</style>
+</head>
+<body>
+<div class="ornament">✦</div>
+<p class="tag">Mindful Moment · 02</p>
+<h1>Gratitude Practice</h1>
+<p class="desc">Take 2 minutes to reflect on what's good. Your answers stay only with you.</p>
+
+<div class="prompts">
+  <div class="prompt-card">
+    <div class="prompt-num">One</div>
+    <div class="prompt-q">Something that made you smile today, even briefly?</div>
+    <input class="prompt-input" type="text" placeholder="Write your thoughts here…">
+  </div>
+  <div class="prompt-card">
+    <div class="prompt-num">Two</div>
+    <div class="prompt-q">A person at work you're grateful to have around?</div>
+    <input class="prompt-input" type="text" placeholder="Write your thoughts here…">
+  </div>
+  <div class="prompt-card">
+    <div class="prompt-num">Three</div>
+    <div class="prompt-q">One small thing you're looking forward to today?</div>
+    <input class="prompt-input" type="text" placeholder="Write your thoughts here…">
+  </div>
+</div>
+
+<div class="divider"></div>
+<p class="note">Research shows that a regular gratitude practice can reduce stress, improve mood, and strengthen relationships. Even 2 minutes counts.</p>
+</body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>5-4-3-2-1 Grounding · Mindful Moment</title>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;1,300&family=Inter:wght@200;300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0d1f1a;
+    --accent: #5ecfa0;
+    --soft: #a8e8cc;
+    --text: #e0f0ea;
+    --muted: #3d6a58;
+    --card: rgba(255,255,255,0.03);
+    --border: rgba(94,207,160,0.12);
+  }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-weight: 200;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1.5rem;
+    overflow: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse at 60% 10%, rgba(94,207,160,0.09) 0%, transparent 55%),
+                radial-gradient(ellipse at 20% 90%, rgba(94,207,160,0.05) 0%, transparent 45%);
+    pointer-events: none;
+  }
+  .tag { font-size: 0.6rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem; opacity: 0; animation: up 0.7s 0.1s forwards; }
+  h1 { font-family: 'Spectral', serif; font-weight: 300; font-size: clamp(2rem, 6vw, 3.2rem); color: var(--soft); text-align: center; margin-bottom: 0.3rem; opacity: 0; animation: up 0.7s 0.2s forwards; }
+  .subtitle { font-family: 'Spectral', serif; font-style: italic; font-size: 1rem; color: var(--muted); text-align: center; margin-bottom: 0.5rem; opacity: 0; animation: up 0.7s 0.25s forwards; }
+  .desc { font-size: 0.8rem; color: var(--muted); text-align: center; max-width: 300px; line-height: 1.7; margin-bottom: 2.5rem; opacity: 0; animation: up 0.7s 0.3s forwards; }
+  .steps { display: flex; flex-direction: column; gap: 0.7rem; width: 100%; max-width: 400px; opacity: 0; animation: up 0.7s 0.4s forwards; }
+  .step {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem 1.3rem;
+    display: flex;
+    gap: 1.1rem;
+    align-items: flex-start;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+  .step.done { background: rgba(94,207,160,0.07); border-color: rgba(94,207,160,0.3); }
+  .step-num {
+    font-family: 'Spectral', serif;
+    font-size: 2rem;
+    line-height: 1;
+    color: var(--accent);
+    font-weight: 300;
+    flex-shrink: 0;
+    width: 28px;
+    transition: opacity 0.3s;
+  }
+  .step.done .step-num { opacity: 0.3; }
+  .step-body { flex: 1; }
+  .step-sense { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.25rem; }
+  .step-instruction { font-family: 'Spectral', serif; font-style: italic; font-size: 0.95rem; color: var(--text); line-height: 1.5; transition: opacity 0.3s; }
+  .step.done .step-instruction { opacity: 0.4; }
+  .step-check { width: 18px; height: 18px; border-radius: 50%; border: 1px solid var(--border); flex-shrink: 0; margin-top: 3px; display: flex; align-items: center; justify-content: center; transition: all 0.3s; }
+  .step.done .step-check { background: var(--accent); border-color: var(--accent); }
+  .step-check::after { content: '✓'; font-size: 0.6rem; color: var(--bg); opacity: 0; transition: opacity 0.2s; }
+  .step.done .step-check::after { opacity: 1; }
+  .reset-btn { margin-top: 1.5rem; background: transparent; border: 1px solid var(--border); color: var(--muted); font-family: 'Inter', sans-serif; font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; padding: 0.6rem 1.8rem; cursor: pointer; transition: all 0.3s; opacity: 0; animation: up 0.7s 0.55s forwards; }
+  .reset-btn:hover { border-color: var(--accent); color: var(--accent); }
+  @keyframes up { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+</style>
+</head>
+<body>
+<p class="tag">Mindful Moment · 05</p>
+<h1>5 · 4 · 3 · 2 · 1</h1>
+<p class="subtitle">Grounding Technique</p>
+<p class="desc">Feeling anxious or overwhelmed? Use your senses to anchor yourself to the present moment.</p>
+
+<div class="steps" id="stepList">
+  <div class="step" onclick="toggleStep(this)">
+    <div class="step-num">5</div>
+    <div class="step-body">
+      <div class="step-sense">👁 See</div>
+      <div class="step-instruction">Name 5 things you can see right now. Look around slowly and really notice each one.</div>
+    </div>
+    <div class="step-check"></div>
+  </div>
+  <div class="step" onclick="toggleStep(this)">
+    <div class="step-num">4</div>
+    <div class="step-body">
+      <div class="step-sense">✋ Touch</div>
+      <div class="step-instruction">Find 4 things you can physically feel — the chair beneath you, your feet on the floor, fabric, temperature.</div>
+    </div>
+    <div class="step-check"></div>
+  </div>
+  <div class="step" onclick="toggleStep(this)">
+    <div class="step-num">3</div>
+    <div class="step-body">
+      <div class="step-sense">👂 Hear</div>
+      <div class="step-instruction">Listen for 3 distinct sounds. Near or far. Notice sounds you usually tune out.</div>
+    </div>
+    <div class="step-check"></div>
+  </div>
+  <div class="step" onclick="toggleStep(this)">
+    <div class="step-num">2</div>
+    <div class="step-body">
+      <div class="step-sense">👃 Smell</div>
+      <div class="step-instruction">Identify 2 things you can smell. Take a slow breath through your nose and notice what's there.</div>
+    </div>
+    <div class="step-check"></div>
+  </div>
+  <div class="step" onclick="toggleStep(this)">
+    <div class="step-num">1</div>
+    <div class="step-body">
+      <div class="step-sense">👅 Taste</div>
+      <div class="step-instruction">Notice 1 thing you can taste, or take a sip of water and focus entirely on that sensation.</div>
+    </div>
+    <div class="step-check"></div>
+  </div>
+</div>
+
+<button class="reset-btn" onclick="resetAll()">Start Over</button>
+
+<script>
+  function toggleStep(el) { el.classList.toggle('done'); }
+  function resetAll() { document.querySelectorAll('.step').forEach(s => s.classList.remove('done')); }
+</script>
+</body>
+</html>

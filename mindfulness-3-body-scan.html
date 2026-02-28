@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Body Scan · Mindful Moment</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;1,400&family=Outfit:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #1a1a2e;
+    --mid: #16213e;
+    --accent: #a78bda;
+    --soft: #d5c8f0;
+    --text: #ede8f8;
+    --muted: #6b5f85;
+    --glow: rgba(167,139,218,0.15);
+  }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Outfit', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1.5rem;
+    overflow: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 30%, rgba(167,139,218,0.12) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .tag { font-size: 0.6rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem; opacity: 0; animation: fadeUp 0.7s 0.1s forwards; }
+  h1 { font-family: 'Libre Baskerville', serif; font-size: clamp(2rem, 6vw, 3.2rem); color: var(--soft); letter-spacing: 0.02em; text-align: center; margin-bottom: 0.4rem; opacity: 0; animation: fadeUp 0.7s 0.2s forwards; }
+  .desc { font-size: 0.82rem; color: var(--muted); text-align: center; max-width: 300px; line-height: 1.7; margin-bottom: 2.5rem; opacity: 0; animation: fadeUp 0.7s 0.3s forwards; }
+  .body-figure { position: relative; width: 80px; height: 180px; margin: 0 auto 2.5rem; opacity: 0; animation: fadeUp 0.7s 0.4s forwards; }
+  .figure-svg { width: 100%; height: 100%; }
+  .body-zone { cursor: pointer; fill: rgba(167,139,218,0.15); stroke: var(--muted); stroke-width: 1; transition: fill 0.3s ease; }
+  .body-zone.active { fill: rgba(167,139,218,0.45); stroke: var(--accent); }
+  .body-zone:hover { fill: rgba(167,139,218,0.3); }
+  .scan-area { width: 100%; max-width: 380px; opacity: 0; animation: fadeUp 0.7s 0.5s forwards; }
+  .zone-cards { display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 1.5rem; }
+  .zone-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(167,139,218,0.12);
+    border-radius: 8px;
+    padding: 0.85rem 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .zone-card:hover, .zone-card.active {
+    background: rgba(167,139,218,0.08);
+    border-color: rgba(167,139,218,0.35);
+  }
+  .zone-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); flex-shrink: 0; transition: background 0.3s; }
+  .zone-card.active .zone-dot { background: var(--accent); box-shadow: 0 0 8px var(--accent); }
+  .zone-name { font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); flex: 0 0 90px; transition: color 0.3s; }
+  .zone-card.active .zone-name { color: var(--soft); }
+  .zone-prompt { font-family: 'Libre Baskerville', serif; font-style: italic; font-size: 0.88rem; color: var(--text); line-height: 1.5; opacity: 0.5; transition: opacity 0.3s; }
+  .zone-card.active .zone-prompt { opacity: 1; }
+  .instruction { font-size: 0.72rem; color: var(--muted); text-align: center; line-height: 1.6; font-style: italic; }
+  .btn { display: block; margin: 0 auto 1.5rem; background: transparent; border: 1px solid rgba(167,139,218,0.35); color: var(--accent); font-family: 'Outfit', sans-serif; font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; padding: 0.65rem 2rem; cursor: pointer; transition: all 0.3s; }
+  .btn:hover { background: rgba(167,139,218,0.08); border-color: var(--accent); }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+</style>
+</head>
+<body>
+<p class="tag">Mindful Moment · 03</p>
+<h1>Body Scan</h1>
+<p class="desc">Spend 3–5 minutes moving your attention gently through your body. Notice without judgment.</p>
+
+<div class="scan-area">
+  <div class="zone-cards" id="zoneCards">
+    <div class="zone-card" data-zone="0">
+      <div class="zone-dot"></div>
+      <div class="zone-name">Head & Face</div>
+      <div class="zone-prompt">Are your jaw and forehead relaxed? Soften any tension you find.</div>
+    </div>
+    <div class="zone-card" data-zone="1">
+      <div class="zone-dot"></div>
+      <div class="zone-name">Neck & Shoulders</div>
+      <div class="zone-prompt">Let your shoulders drop. Release any tightness in your neck.</div>
+    </div>
+    <div class="zone-card" data-zone="2">
+      <div class="zone-dot"></div>
+      <div class="zone-name">Chest & Breath</div>
+      <div class="zone-prompt">Notice your chest rising and falling. Take one slow, deep breath.</div>
+    </div>
+    <div class="zone-card" data-zone="3">
+      <div class="zone-dot"></div>
+      <div class="zone-name">Arms & Hands</div>
+      <div class="zone-prompt">Unclench your hands. Let your arms feel heavy and at ease.</div>
+    </div>
+    <div class="zone-card" data-zone="4">
+      <div class="zone-dot"></div>
+      <div class="zone-name">Hips & Lower Back</div>
+      <div class="zone-prompt">Notice where you're sitting. Is there tension? Adjust if needed.</div>
+    </div>
+    <div class="zone-card" data-zone="5">
+      <div class="zone-dot"></div>
+      <div class="zone-name">Legs & Feet</div>
+      <div class="zone-prompt">Feel your feet on the floor. Ground yourself in this moment.</div>
+    </div>
+  </div>
+
+  <button class="btn" id="autoBtn" onclick="autoScan()">Auto-Guide Me</button>
+  <p class="instruction">Tap any area to focus on it, or press Auto-Guide for a timed walkthrough.</p>
+</div>
+
+<script>
+  const cards = document.querySelectorAll('.zone-card');
+  cards.forEach(c => c.addEventListener('click', () => {
+    cards.forEach(x => x.classList.remove('active'));
+    c.classList.add('active');
+  }));
+
+  let autoInterval = null;
+  function autoScan() {
+    if (autoInterval) { clearInterval(autoInterval); autoInterval = null; document.getElementById('autoBtn').textContent = 'Auto-Guide Me'; return; }
+    let idx = 0;
+    cards.forEach(x => x.classList.remove('active'));
+    cards[0].classList.add('active');
+    cards[0].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    document.getElementById('autoBtn').textContent = 'Stop';
+    autoInterval = setInterval(() => {
+      cards.forEach(x => x.classList.remove('active'));
+      idx++;
+      if (idx >= cards.length) {
+        clearInterval(autoInterval);
+        autoInterval = null;
+        document.getElementById('autoBtn').textContent = 'Auto-Guide Me';
+        return;
+      }
+      cards[idx].classList.add('active');
+      cards[idx].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 5000);
+  }
+</script>
+</body>
+</html>

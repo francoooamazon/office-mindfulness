@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mindful Movement · Mindful Moment</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;1,300&family=Nunito+Sans:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #1c1410;
+    --accent: #e8a44a;
+    --soft: #f5d49a;
+    --text: #f2ead8;
+    --muted: #6e5a3a;
+    --card: rgba(255,255,255,0.03);
+    --border: rgba(232,164,74,0.15);
+  }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Nunito Sans', sans-serif;
+    font-weight: 200;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1.5rem;
+    overflow: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse at 70% 20%, rgba(232,164,74,0.08) 0%, transparent 55%),
+                radial-gradient(ellipse at 15% 80%, rgba(232,164,74,0.05) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .tag { font-size: 0.6rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem; opacity: 0; animation: up 0.7s 0.1s forwards; }
+  h1 { font-family: 'Fraunces', serif; font-weight: 300; font-size: clamp(2rem, 6vw, 3.2rem); color: var(--soft); text-align: center; margin-bottom: 0.3rem; opacity: 0; animation: up 0.7s 0.2s forwards; }
+  .desc { font-size: 0.82rem; color: var(--muted); text-align: center; max-width: 300px; line-height: 1.7; margin-bottom: 2rem; opacity: 0; animation: up 0.7s 0.3s forwards; }
+
+  .carousel { width: 100%; max-width: 400px; opacity: 0; animation: up 0.7s 0.4s forwards; }
+  .stretch-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.8rem 1.6rem;
+    text-align: center;
+    min-height: 220px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    transition: opacity 0.4s ease;
+  }
+  .stretch-icon { font-size: 2.8rem; margin-bottom: 1rem; line-height: 1; }
+  .stretch-name { font-family: 'Fraunces', serif; font-size: 1.4rem; color: var(--soft); margin-bottom: 0.5rem; }
+  .stretch-how { font-size: 0.82rem; color: var(--muted); line-height: 1.7; max-width: 280px; margin-bottom: 1rem; }
+  .stretch-time { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
+
+  .nav { display: flex; align-items: center; justify-content: space-between; margin-top: 1.2rem; padding: 0 0.5rem; }
+  .nav-btn { background: transparent; border: 1px solid var(--border); color: var(--accent); width: 40px; height: 40px; border-radius: 50%; font-size: 1.1rem; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; }
+  .nav-btn:hover { background: rgba(232,164,74,0.08); border-color: var(--accent); }
+  .dots { display: flex; gap: 0.5rem; }
+  .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--muted); transition: background 0.3s; }
+  .dot.active { background: var(--accent); }
+
+  .timer-row { margin-top: 1.5rem; text-align: center; opacity: 0; animation: up 0.7s 0.55s forwards; }
+  .timer-display { font-family: 'Fraunces', serif; font-size: 2.5rem; color: var(--soft); line-height: 1; margin-bottom: 0.5rem; }
+  .timer-btns { display: flex; gap: 0.75rem; justify-content: center; }
+  .t-btn { background: transparent; border: 1px solid var(--border); color: var(--accent); font-family: 'Nunito Sans', sans-serif; font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase; padding: 0.5rem 1.2rem; cursor: pointer; transition: all 0.3s; }
+  .t-btn:hover { background: rgba(232,164,74,0.08); border-color: var(--accent); }
+  @keyframes up { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+</style>
+</head>
+<body>
+<p class="tag">Mindful Moment · 06</p>
+<h1>Mindful Movement</h1>
+<p class="desc">Step away from the screen for a moment. Your body will thank you.</p>
+
+<div class="carousel">
+  <div class="stretch-card" id="card">
+    <div class="stretch-icon" id="icon"></div>
+    <div class="stretch-name" id="name"></div>
+    <div class="stretch-how" id="how"></div>
+    <div class="stretch-time" id="time"></div>
+  </div>
+  <div class="nav">
+    <button class="nav-btn" onclick="prev()">←</button>
+    <div class="dots" id="dots"></div>
+    <button class="nav-btn" onclick="next()">→</button>
+  </div>
+</div>
+
+<div class="timer-row">
+  <div class="timer-display" id="timerDisplay">0:30</div>
+  <div class="timer-btns">
+    <button class="t-btn" onclick="startTimer()">Start Timer</button>
+    <button class="t-btn" onclick="resetTimer()">Reset</button>
+  </div>
+</div>
+
+<script>
+  const stretches = [
+    { icon: '🙆', name: 'Neck Release', how: 'Slowly drop your right ear toward your right shoulder. Hold. Feel the stretch along the left side of your neck. Switch sides. Breathe deeply throughout.', time: '30 sec each side' },
+    { icon: '🙋', name: 'Shoulder Rolls', how: 'Roll your shoulders forward in slow circles 5 times, then backward 5 times. Focus on releasing any tightness with each rotation.', time: '30 seconds' },
+    { icon: '🤲', name: 'Wrist Stretch', how: 'Extend one arm, palm facing out. Use the other hand to gently pull fingers back toward you. Hold, then switch. Great for typing fatigue.', time: '20 sec each hand' },
+    { icon: '🧘', name: 'Seated Spinal Twist', how: 'Sit tall, then gently twist your torso to the right, holding the back of your chair. Hold for a breath or two, then twist to the left.', time: '30 sec each side' },
+    { icon: '🦵', name: 'Seated Hip Stretch', how: 'Place your right ankle on your left knee. Gently press down on the right knee and lean forward slightly until you feel a stretch in your hip. Switch sides.', time: '30 sec each side' },
+    { icon: '🌬️', name: 'Deep Breath Stand', how: 'Stand up, plant both feet on the ground. Inhale deeply as you raise your arms overhead. Exhale slowly as you lower them. Repeat 5 times.', time: '1 minute' },
+  ];
+
+  let idx = 0;
+  let timerInterval = null;
+  let timerSec = 30;
+  let timerRunning = false;
+
+  function render() {
+    const s = stretches[idx];
+    document.getElementById('icon').textContent = s.icon;
+    document.getElementById('name').textContent = s.name;
+    document.getElementById('how').textContent = s.how;
+    document.getElementById('time').textContent = s.time;
+    const dotsEl = document.getElementById('dots');
+    dotsEl.innerHTML = stretches.map((_, i) => `<div class="dot${i===idx?' active':''}"></div>`).join('');
+    resetTimer();
+  }
+
+  function next() { idx = (idx + 1) % stretches.length; render(); }
+  function prev() { idx = (idx - 1 + stretches.length) % stretches.length; render(); }
+
+  function startTimer() {
+    if (timerRunning) return;
+    timerRunning = true;
+    timerInterval = setInterval(() => {
+      timerSec--;
+      const m = Math.floor(timerSec / 60);
+      const s = timerSec % 60;
+      document.getElementById('timerDisplay').textContent = `${m}:${s.toString().padStart(2,'0')}`;
+      if (timerSec <= 0) { clearInterval(timerInterval); timerRunning = false; document.getElementById('timerDisplay').textContent = 'Done ✓'; }
+    }, 1000);
+  }
+
+  function resetTimer() {
+    clearInterval(timerInterval);
+    timerRunning = false;
+    timerSec = 30;
+    document.getElementById('timerDisplay').textContent = '0:30';
+  }
+
+  render();
+</script>
+</body>
+</html>

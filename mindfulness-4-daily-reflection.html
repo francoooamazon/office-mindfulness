@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Reflection · Mindful Moment</title>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Sans:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #f4f0eb;
+    --paper: #fdfaf6;
+    --ink: #1e1a14;
+    --rust: #9b4521;
+    --warm: #c4703a;
+    --muted: #8a7d6e;
+    --line: #e0d8cc;
+  }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2.5rem 1.5rem;
+  }
+  .tag { font-size: 0.6rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--rust); margin-bottom: 0.5rem; opacity: 0; animation: in 0.6s 0.1s forwards; }
+  h1 { font-family: 'EB Garamond', serif; font-size: clamp(2rem, 6vw, 3rem); color: var(--ink); text-align: center; margin-bottom: 0.4rem; opacity: 0; animation: in 0.6s 0.2s forwards; }
+  .desc { font-size: 0.83rem; color: var(--muted); text-align: center; max-width: 300px; line-height: 1.7; margin-bottom: 2rem; opacity: 0; animation: in 0.6s 0.3s forwards; }
+  .journal-card {
+    background: var(--paper);
+    border-radius: 2px;
+    padding: 2rem 2rem 1.5rem;
+    max-width: 420px;
+    width: 100%;
+    box-shadow: 0 4px 24px rgba(30,26,20,0.09), 0 1px 3px rgba(30,26,20,0.06);
+    position: relative;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: in 0.6s 0.4s forwards;
+  }
+  .journal-card::before {
+    content: '';
+    position: absolute;
+    left: 48px; top: 0; bottom: 0;
+    width: 1px;
+    background: rgba(196,112,58,0.2);
+  }
+  .date-line { font-size: 0.68rem; letter-spacing: 0.15em; color: var(--muted); text-transform: uppercase; margin-bottom: 1.5rem; padding-left: 56px; }
+  .prompt-block { margin-bottom: 1.4rem; }
+  .prompt-label { font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--warm); margin-bottom: 0.4rem; padding-left: 56px; }
+  .prompt-text { font-family: 'EB Garamond', serif; font-style: italic; font-size: 1.05rem; color: var(--ink); line-height: 1.5; padding-left: 56px; margin-bottom: 0.5rem; }
+  .journal-input {
+    display: block;
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid var(--line);
+    background: transparent;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.85rem;
+    color: var(--ink);
+    padding: 0.35rem 0 0.35rem 56px;
+    outline: none;
+    font-weight: 300;
+    resize: none;
+    height: 52px;
+  }
+  .journal-input::placeholder { color: #c0b8ae; }
+  .journal-input:focus { border-bottom-color: var(--warm); }
+  .shuffle-btn { display: block; margin: 0 auto; background: transparent; border: 1px solid rgba(155,69,33,0.35); color: var(--rust); font-family: 'IBM Plex Sans', sans-serif; font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; padding: 0.65rem 1.8rem; cursor: pointer; transition: all 0.3s; opacity: 0; animation: in 0.6s 0.55s forwards; }
+  .shuffle-btn:hover { background: rgba(155,69,33,0.06); border-color: var(--rust); }
+  @keyframes in { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+</style>
+</head>
+<body>
+<p class="tag">Mindful Moment · 04</p>
+<h1>Daily Reflection</h1>
+<p class="desc">A quiet moment to check in with yourself. There are no right answers.</p>
+
+<div class="journal-card">
+  <div class="date-line" id="dateEl"></div>
+
+  <div class="prompt-block">
+    <div class="prompt-label">Right now</div>
+    <div class="prompt-text" id="q1">How would you honestly describe your energy today?</div>
+    <textarea class="journal-input" placeholder="Write freely…" rows="2"></textarea>
+  </div>
+  <div class="prompt-block">
+    <div class="prompt-label">Reflect</div>
+    <div class="prompt-text" id="q2">What's one thing you've done well this week?</div>
+    <textarea class="journal-input" placeholder="Write freely…" rows="2"></textarea>
+  </div>
+  <div class="prompt-block">
+    <div class="prompt-label">Intention</div>
+    <div class="prompt-text" id="q3">What's one small thing you could do to take care of yourself today?</div>
+    <textarea class="journal-input" placeholder="Write freely…" rows="2"></textarea>
+  </div>
+</div>
+
+<button class="shuffle-btn" onclick="shufflePrompts()">New Prompts</button>
+
+<script>
+  const d = new Date();
+  document.getElementById('dateEl').textContent = d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+
+  const now = [
+    "How would you honestly describe your energy today?",
+    "What emotion is most present for you right now?",
+    "On a scale of 1–10, how stressed do you feel — and what's driving that?",
+    "What does your body need right now?",
+    "What's weighing on your mind most today?"
+  ];
+  const reflect = [
+    "What's one thing you've done well this week?",
+    "Who has supported you lately, and how?",
+    "What challenge have you grown from recently?",
+    "What's something you're proud of, even if it felt small?",
+    "What did you learn about yourself this month?"
+  ];
+  const intend = [
+    "What's one small thing you could do to take care of yourself today?",
+    "What would make today feel meaningful?",
+    "What's one boundary you want to honor this week?",
+    "If today were great, what would that look like?",
+    "What do you want to let go of before the day ends?"
+  ];
+
+  function rand(arr, exclude) { let r; do { r = arr[Math.floor(Math.random()*arr.length)]; } while(r===exclude); return r; }
+  function shufflePrompts() {
+    document.getElementById('q1').textContent = rand(now, document.getElementById('q1').textContent);
+    document.getElementById('q2').textContent = rand(reflect, document.getElementById('q2').textContent);
+    document.getElementById('q3').textContent = rand(intend, document.getElementById('q3').textContent);
+  }
+</script>
+</body>
+</html>
